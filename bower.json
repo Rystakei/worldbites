@@ -5,6 +5,7 @@
     "bootstrap-sass-official": "~3.2.0",
     "react": "~0.12.2",
     "react-bootstrap": "~0.13.3",
-    "fontawesome": "~4.3.0"
+    "fontawesome": "~4.3.0",
+    "jvectormap": "~2.0.0"
   }
 }

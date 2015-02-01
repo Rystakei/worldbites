@@ -4,21 +4,6 @@ var Grid = ReactBootstrap.Grid;
 var ListGroup = ReactBootstrap.ListGroup;
 var ListGroupItem = ReactBootstrap.ListGroupItem;
 
-
-var data = [
-  {author: "Pete Hunt", text: "This is one comment"},
-  {author: "Jordan Walke", text: "This is *another* comment"}
-];
-
-var wellStyles = {maxWidth: 400, margin: '0 auto 10px'};
-
-var buttonsInstance = (
-    <div className="well" style={wellStyles}>
-      <Button bsStyle="primary" bsSize="large" block>Block level button</Button>
-      <Button bsSize="large" block>Block level button</Button>
-    </div>
-  );
-
 var ListInstance = React.createClass({
 
   getInitialState: function() {
@@ -37,10 +22,28 @@ var ListInstance = React.createClass({
         <ListGroupItem > <i className={countryIcon}></i> {country.name} <i className={checkIcon} onClick={self.handleClick.bind(this, country)}></i> </ListGroupItem>
       );
     });
+
+    //generate countryCode colors;
+    var self = this;
+    var countryColors = {};
+    this.props.countries.map(function(country){
+      var countryCode = country.abbr;
+      var statusColor = self.state.checked[countryCode] ? "#A5D6A7" : "white";
+      var updatedCountry = {}
+      var countryCode = country.abbr.toUpperCase();
+      var result = countryColors[countryCode] = statusColor;
+    });
+
+
     return (
-      <ListGroup>
-        {countries}
-      </ListGroup>
+      <div className="worldContainer">
+        <div id="map">
+          <WorldMap countries={this.props.countries} checkedCountries={this.state.checked} countryColors={countryColors}/>
+        </div>
+        <ListGroup>
+          {countries}
+        </ListGroup>
+      </div>
     );
   },
 
@@ -56,6 +59,35 @@ var ListInstance = React.createClass({
       }
   }
 
+});
+
+var WorldMap = React.createClass({
+  componentDidMount: function() {
+    // console.log(this.getDOMNode()); 
+    this.worldMap = new jvm.Map({
+      map: 'world_mill_en',
+      backgroundColor: "#0288D1",
+      container: $(this.getDOMNode()),
+      series: {
+        regions: [{
+          attribute: 'fill'
+        }]
+      }
+    });
+    this.worldMap.series.regions[0].setValues(this.props.countryColors);
+
+  },
+
+  componentDidUpdate: function() {
+    this.worldMap.series.regions[0].setValues(this.props.countryColors);
+  },
+
+  render: function() {
+    return (
+      <div className="map-container">
+      </div>
+    );
+  }
 });
 
 React.render(<ListInstance countries={[{name:'Italy', abbr: 'it', checked: false}, {name: 'Canada', abbr: 'ca', checked: false}, {name: 'Kenya', abbr: 'ke', checked: true}]} />, document.getElementById('reactStuff'));

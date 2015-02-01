@@ -7,6 +7,16 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   cursor: pointer;
 }
 
+#map{
+  height: 300px;
+  width: 100%;
+  background-color: pink;
+}
+
+.map-container{
+  height: 100%;
+  width: 100%;
+}
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
