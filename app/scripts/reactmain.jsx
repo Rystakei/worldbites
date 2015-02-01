@@ -30,9 +30,11 @@ var ListInstance = React.createClass({
   render: function() {
     var self = this; 
     var countries = this.props.countries.map(function(country, i){
+      var countryIcon = "mg map-" + country.abbr;
       var checkType = self.state.checked[country.abbr] ? 'checked' : 'unchecked';
+      var checkIcon = self.state.checked[country.abbr] ? "fa fa-check-square-o pull-right" : "fa fa-square-o pull-right";
       return (
-        <ListGroupItem onClick={self.handleClick.bind(this, country)}> {country.name} {checkType} </ListGroupItem>
+        <ListGroupItem > <i className={countryIcon}></i> {country.name} <i className={checkIcon} onClick={self.handleClick.bind(this, country)}></i> </ListGroupItem>
       );
     });
     return (
