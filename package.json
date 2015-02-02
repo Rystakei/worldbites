@@ -30,6 +30,8 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "country-data": "0.0.18"
+    "country-data": "0.0.18",
+    "react": "^0.12.2",
+    "react-bootstrap-multiselect": "^0.1.1"
   }
 }

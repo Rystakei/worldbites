@@ -45,6 +45,10 @@ module.exports = function (grunt) {
         files: ['test/spec/{,*/}*.js'],
         tasks: ['test:watch']
       },
+      browserify: {
+        files: ['<%= config.app %>/scripts/{,*/}*.js', '<%= config.app %>/scripts/{,*/}*.jsx'],
+        tasks: ['browserify:dev']
+      },
       gruntfile: {
         files: ['Gruntfile.js']
       },
@@ -65,6 +69,27 @@ module.exports = function (grunt) {
           '.tmp/styles/{,*/}*.css',
           '<%= config.app %>/images/{,*/}*'
         ]
+      }
+    },
+
+    browserify: {
+      dev: {
+        options: {
+          debug: true,
+          transform: ['reactify']
+        },
+        files: {
+          '<%= config.app %>/scripts/{,*/}*.js':'<%= config.app %>/scripts/{,*/}*.jsx'
+        }
+      },
+      build: {
+        options: {
+          debug: false,
+          transform: ['reactify']
+        },
+        files: {
+          'public/build/build.js': 'public/js/**/*.jsx'
+        }
       }
     },
 
@@ -363,6 +388,7 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-browserify');
 
   grunt.registerTask('serve', 'start the server and preview your app, --allow-remote for remote access', function (target) {
     if (grunt.option('allow-remote')) {
@@ -414,7 +440,8 @@ module.exports = function (grunt) {
     'copy:dist',
     'rev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'browserify:build'
   ]);
 
   grunt.registerTask('default', [

@@ -3,6 +3,8 @@ var Button = ReactBootstrap.Button;
 var Grid = ReactBootstrap.Grid;
 var ListGroup = ReactBootstrap.ListGroup;
 var ListGroupItem = ReactBootstrap.ListGroupItem;
+var Multiselect = require('react-bootstrap-multiselect');
+
 var ListInstance = React.createClass({
 
   getInitialState: function() {
