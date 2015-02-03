@@ -36,7 +36,6 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        tasks: ['jshint'],
         options: {
           livereload: true
         }
@@ -79,7 +78,7 @@ module.exports = function (grunt) {
           transform: ['reactify']
         },
         files: {
-          '<%= config.app %>/scripts/{,*/}*.js':'<%= config.app %>/scripts/{,*/}*.jsx'
+          '<%= config.app %>/transform/reactbuild.js':'<%= config.app %>/scripts/reactmain.jsx'
         }
       },
       build: {

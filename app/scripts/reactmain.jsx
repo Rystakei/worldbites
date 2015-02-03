@@ -1,15 +1,27 @@
+var React = require('react');
+var ReactBootstrap = require('react-bootstrap');
+var Multiselect = require('react-bootstrap-multiselect');
 var ButtonToolbar = ReactBootstrap.ButtonToolbar;
 var Button = ReactBootstrap.Button;
 var Grid = ReactBootstrap.Grid;
 var ListGroup = ReactBootstrap.ListGroup;
 var ListGroupItem = ReactBootstrap.ListGroupItem;
-var Multiselect = require('react-bootstrap-multiselect');
 
 var ListInstance = React.createClass({
 
   getInitialState: function() {
+    var countries = ['Africa', 'Asia', 'Europe', 'South America', 'North America', 'Australia and the Pacific'];
+    var oldList = [{value:'One',selected:true},{value:'Two'},{value:'Three'},{value:'Four',label:'Four Label'}];
+    var newList = [];
+    for(i = 0; i < countries.length; i++){
+        var country = i === 0 ? {value: countries[i], selected: true} : {value: countries[i]};
+        newList.push(country);
+    }
+    console.log(newList);
+
     return {
-      countries: {
+    list: newList,
+    countries: {
     'AF' : 'Afghanistan',
     'AX' : 'Aland Islands',
     'AL' : 'Albania',
@@ -302,19 +314,19 @@ var ListInstance = React.createClass({
         <div id="map">
           <WorldMap countries={this.props.countries} checkedCountries={this.state.checked} countryColors={countryColors}/>
         </div>
-        <select className="form-control">
-          <option value="Africa">Africa</option>
-          <option value="The Americas">The Americas</option>
-          <option value="Europe">Europe</option>
-          <option value="Asia">Asia</option>
-          <option value="Australia and the Pacific">Australia and the Pacific</option>
-        </select>
+        <Multiselect onClick={this.handleChange} data={this.state.list} multiple />
         <ListGroup>
           {countries}
         </ListGroup>
       </div>
     );
   },
+
+    handleChange: function () {
+        this.setState({
+            list: [{value:'One'},{value:'Two'},{value:'Three'},{value:'Four',label:'Four Label'}]
+        });
+    },
 
   handleClick: function(abbr) {
       var checked = this.state.checked;
@@ -359,3 +371,5 @@ var WorldMap = React.createClass({
 });
 
 React.render(<ListInstance countries={[{name:'Italy', abbr: 'it', checked: false}, {name: 'Canada', abbr: 'ca', checked: false}, {name: 'Kenya', abbr: 'ke', checked: true}]} />, document.getElementById('reactStuff'));
+
+exports.React = window.React = React;
