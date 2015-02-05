@@ -7,6 +7,12 @@ var Grid = ReactBootstrap.Grid;
 var ListGroup = ReactBootstrap.ListGroup;
 var ListGroupItem = ReactBootstrap.ListGroupItem;
 
+
+var countries  = require('country-data').countries,
+    currencies = require('country-data').currencies,
+    regions    = require('country-data').regions,
+    languages  = require('country-data').languages;
+
 var ListInstance = React.createClass({
 
   getInitialState: function() {
@@ -17,7 +23,6 @@ var ListInstance = React.createClass({
         var country = i === 0 ? {value: countries[i], selected: true} : {value: countries[i]};
         newList.push(country);
     }
-    console.log(newList);
 
     return {
     list: newList,
@@ -314,7 +319,9 @@ var ListInstance = React.createClass({
         <div id="map">
           <WorldMap countries={this.props.countries} checkedCountries={this.state.checked} countryColors={countryColors}/>
         </div>
-        <Multiselect onClick={this.handleChange} data={this.state.list} multiple />
+        <div onClick={this.handleChange} className="select-container">
+            <Multiselect onChange={this.filterList} data={this.state.list} multiple />
+        </div>
         <ListGroup>
           {countries}
         </ListGroup>
@@ -322,11 +329,47 @@ var ListInstance = React.createClass({
     );
   },
 
-    handleChange: function () {
-        this.setState({
-            list: [{value:'One'},{value:'Two'},{value:'Three'},{value:'Four',label:'Four Label'}]
-        });
+    handleChange: function (region) {
+        // var changeCountries = countries;
+        // var key = region.toLowerCase();
+
+        // var regionalCountries = regions[key][key].countries;
+        // filteredCountries = {};
+        // regionalCountries.map(function(code){
+        //     var countryCode = code;
+        //     var countryName = countries[countryCode].name;
+        //     filteredCountries[countryCode] = countryName;   
+        // });
+        
+        // this.setState({
+        //     countries: filteredCountries,
+        // });
+        // console.log("filteredCountries");
+        // console.log(filteredCountries);
     },
+
+filterList: function(event) {
+    this.handleChange(event[0].value);
+    var region = event[0].value;
+
+    var changeCountries = countries;
+    var key = region.toLowerCase();
+
+    var regionalCountries = regions[key][key].countries;
+    filteredCountries = {};
+    regionalCountries.map(function(code){
+        var countryCode = code;
+        var countryName = countries[countryCode].name;
+        filteredCountries[countryCode] = countryName;   
+    });
+    
+    this.setState({
+        countries: filteredCountries,
+    });
+    console.log("filteredCountries");
+    console.log(filteredCountries);
+
+},
 
   handleClick: function(abbr) {
       var checked = this.state.checked;
