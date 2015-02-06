@@ -5,6 +5,7 @@
     "bootstrap-sass-official": "~3.2.0",
     "fontawesome": "~4.3.0",
     "jvectormap": "~2.0.0",
-    "bootstrap-multiselect": "~0.9.10"
+    "bootstrap-multiselect": "~0.9.10",
+    "bootstrap-select": "~1.6.3"
   }
 }

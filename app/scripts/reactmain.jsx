@@ -13,19 +13,19 @@ var countries  = require('country-data').countries,
     regions    = require('country-data').regions,
     languages  = require('country-data').languages;
 
+
 var ListInstance = React.createClass({
 
   getInitialState: function() {
     var countries = ['Africa', 'Asia', 'Europe', 'South America', 'North America', 'Australia and the Pacific'];
-    var oldList = [{value:'One',selected:true},{value:'Two'},{value:'Three'},{value:'Four',label:'Four Label'}];
-    var newList = [];
+    var list = [];
     for(i = 0; i < countries.length; i++){
         var country = i === 0 ? {value: countries[i], selected: true} : {value: countries[i]};
-        newList.push(country);
+        list.push(country);
     }
 
     return {
-    list: newList,
+    list: list,
     countries: {
     'AF' : 'Afghanistan',
     'AX' : 'Aland Islands',
@@ -302,25 +302,14 @@ var ListInstance = React.createClass({
       var result = countryColors[countryCode] = statusColor;
     });
 
-
-    // $.each(this.state.countries, function(key, value) {
-    //     var key = key.toLowerCase();
-    //     var countryIcon = "mg map-" + key;
-    //     var checkType = self.state.checked[key] ? 'checked' : 'unchecked';
-    //     var checkIcon = self.state.checked[key] ? "fa fa-check-square-o pull-right" : "fa fa-square-o pull-right";
-    //     var listItem = <ListGroupItem > <i className={countryIcon}></i> {value} <i className={checkIcon} onClick={self.handleClick.bind(this, key)}></i> </ListGroupItem>;
-
-    //     countries.push(listItem);
-    // });
-
-
     return (
       <div className="worldContainer">
         <div id="map">
           <WorldMap countries={this.props.countries} checkedCountries={this.state.checked} countryColors={countryColors}/>
         </div>
-        <div onClick={this.handleChange} className="select-container">
-            <Multiselect onChange={this.filterList} data={this.state.list} multiple />
+        <div className="select-container">
+            <BootstrapSelect onChange={this.filterList}>
+            </BootstrapSelect>
         </div>
         <ListGroup>
           {countries}
@@ -329,34 +318,13 @@ var ListInstance = React.createClass({
     );
   },
 
-    handleChange: function (region) {
-        // var changeCountries = countries;
-        // var key = region.toLowerCase();
-
-        // var regionalCountries = regions[key][key].countries;
-        // filteredCountries = {};
-        // regionalCountries.map(function(code){
-        //     var countryCode = code;
-        //     var countryName = countries[countryCode].name;
-        //     filteredCountries[countryCode] = countryName;   
-        // });
-        
-        // this.setState({
-        //     countries: filteredCountries,
-        // });
-        // console.log("filteredCountries");
-        // console.log(filteredCountries);
-    },
-
-filterList: function(event) {
-    this.handleChange(event[0].value);
-    var region = event[0].value;
+filterList: function(region) {
 
     var changeCountries = countries;
-    var key = region.toLowerCase();
-
+    var key = region.charAt(0).toLowerCase() + region.slice(1).replace(/\s/g, '');
     var regionalCountries = regions[key][key].countries;
-    filteredCountries = {};
+    var filteredCountries = {};
+
     regionalCountries.map(function(code){
         var countryCode = code;
         var countryName = countries[countryCode].name;
@@ -366,9 +334,6 @@ filterList: function(event) {
     this.setState({
         countries: filteredCountries,
     });
-    console.log("filteredCountries");
-    console.log(filteredCountries);
-
 },
 
   handleClick: function(abbr) {
@@ -383,6 +348,33 @@ filterList: function(event) {
       }
   }
 
+});
+
+var BootstrapSelect = React.createClass({
+    componentDidMount: function() {
+        var bSelect = this.refs.select;
+        $(bSelect.getDOMNode()).selectpicker();
+        $(bSelect.getDOMNode()).change(function() {
+         var value = $(this.refs.select.getDOMNode()).val();
+         this.props.onChange(value);
+        }.bind(this));
+    },
+    render: function() {
+        var regions = {af: 'Africa', as: 'Asia', eu:'Europe', sa:'South America',na: 'North America',oc: 'Oceania'};
+        var options = [];
+
+        $.each(regions, function(key, value) {
+            var continentIcon = "mg map-wrld-" + key;
+            var option = <option value={value} data-icon={continentIcon}>{value}</option>
+            options.push(option);
+        });
+
+        return (
+            <select ref="select" className="select-picker">
+                {options}
+            </select>
+        );
+    }
 });
 
 var WorldMap = React.createClass({
@@ -413,6 +405,6 @@ var WorldMap = React.createClass({
   }
 });
 
-React.render(<ListInstance countries={[{name:'Italy', abbr: 'it', checked: false}, {name: 'Canada', abbr: 'ca', checked: false}, {name: 'Kenya', abbr: 'ke', checked: true}]} />, document.getElementById('reactStuff'));
+React.render(<ListInstance countries={[{name:'Italy', abbr: 'it', checked: false}, {name: 'Canada', abbr: 'ca', checked: false}, {name: 'Kenya', abbr: 'ke', checked: true}]} />, document.getElementById('myApp'));
 
 exports.React = window.React = React;
