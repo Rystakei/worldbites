@@ -7,6 +7,37 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   width: 400px;
   height: 400px;
 }
+
+.continent-filter{
+  width: 100%;
+}
+
+.filtered-countries{
+  margin-top: 20px;
+}
+
+.total-countries{
+  text-align: center;
+}
+
+.list-group-item{
+  height: 80px;
+  max-height: 100px;
+  transition: max-height 3s;
+}
+
+.list-group-item:hover{
+  max-height: 200px;  
+
+  .country-stats{
+    display:block;
+  }
+}
+
+.country-stats{
+  display:block;
+}
+
 .fa{
   cursor: pointer;
 }
