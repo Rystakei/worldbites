@@ -575,13 +575,6 @@ var ListInstance = React.createClass({
 
     });
 
-    $.each(this.state.countryData, function(i, country){
-      var countryCode = country.code.toUpperCase();
-      var statusColor = self.state.checked[countryCode] ? "#A5D6A7" : "white";
-      var updatedCountry = {}
-      var result = countryColors[countryCode] = statusColor;
-    });
-
     return (
       <div className="worldContainer">
         <div id="map">
